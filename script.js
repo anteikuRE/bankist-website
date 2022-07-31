@@ -1,12 +1,15 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+
+
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -29,6 +32,75 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+
+
+
+// Btn scrollign
+btnScrollTo.addEventListener('click', function (e) {
+  const s1coords = section1.getBoundingClientRect();
+  /*  console.log(s1coords);
+   console.log(e.target.getBoundingClientRect());
+   console.log('current scroll (x/y)', window.pageXOffset, pageYOffset);
+   console.log('heig/width', document.documentElement.clientHeight, document.documentElement.clientWidth);
+  */
+  // window.scrollTo(s1coords.left + window.pageXOffset, s1coords.top + window.pageYOffset)
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset,
+  //   behavior: 'smooth'
+  // })
+
+  section1.scrollIntoView({ behavior: 'smooth' })
+})
+
+// Page navigation
+
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   })
+// })
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+})
+
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!clicked) return;
+
+  //  Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'))
+
+  //  Activate tab
+  clicked.classList.add('operations__tab--active')
+
+  // Activate content area
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
+})
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -63,20 +135,93 @@ header.append(message)
 // Delete elements
 document.querySelector('.btn--close-cookie').addEventListener('click', function () {
   message.remove();
-}) */
+})
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
 
-/////////////////////////////////
-function getMiddle(s) {
-  //Code goes here!
-  console.log(s);
-  const sl = s.length / 2 + 1
-  if (s.length % 2 == 0) {
+console.log(message.style.height);
+console.log(message.style.backgroundColor);
+console.log(getComputedStyle(message).color);
+console.log(getComputedStyle(message).color);
 
-    console.log(s.slice(1, sl));
+message.style.height = Number.parseFloat(getComputedStyle(message).height + 30 + 'px')
 
-  } else {
-    console.log(s.slice(0, sl));
-  }
+document.documentElement.style.setProperty('--color-primary', 'orangered')
+
+const logo = document.querySelector('.nav__logo');
+
+
+console.log(logo.getAttribute('designer'));
+logo.setAttribute('company', 'Bankist')
+
+console.log(logo.src);
+console.log(logo.getAttribute('src'));
+
+const link = document.querySelector('.twitter-link');
+console.log(link.href);
+console.log(link.getAttribute('href'));
+console.log(logo.dataset.versionNumber);
+
+logo.classList.add('c')
+logo.classList.remove('c')
+logo.classList.toggle('c')
+logo.classList.contains('c')
+ */
+
+
+
+/* const h1 = document.querySelector('h1');
+
+const alertH1 = function (e) {
+  alert('addEventListener: Great! You ar reading the heading')
+
+  h1.removeEventListener('mouseenter', alertH1)
 }
 
-getMiddle("testing")
+h1.addEventListener('mouseenter', alertH1); */
+
+// h1.onmouseenter = function (e) {
+//   alert('addEventListener: Great! You ar reading the heading')
+// };
+
+/* const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () => `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+console.log(randomColor(0, 255));
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor(0, 255);
+});
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor(0, 255);
+})
+document.querySelector('.nav').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor(0, 255);
+}) */
+/* 
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.children);
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)'
+
+h1.closest('h1').style.background = 'var(--gradient-primary )'
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5';
+}); */
